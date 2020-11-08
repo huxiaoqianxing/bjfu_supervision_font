@@ -41,5 +41,14 @@ export default
         title: '报名中心'
       },
       component: resolve => require(['Views/ActiveAttend/index'], resolve)
+    },
+    {
+      name: '培训中心',
+      path: 'attend',
+      meta: {
+        icon: 'arrow-graph-up-right',
+        title: '培训中心'
+      },
+      component: resolve => require(['Views/TeachingResearch/index'], resolve)
     }
   ] }

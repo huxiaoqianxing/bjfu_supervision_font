@@ -8,69 +8,61 @@
       :loading="loading"
       style="width: 600px;"><!--:load="loading"-->
       <Form :label-width="100" style="width: 400px" ref="activity_form" :model="activity" :rules="ruleValidate">
-        <form-item label="活动名称:" prop="name">
+        <form-item label="题目:" prop="title">
           <Row>
             <Col>
-              <Input v-model="activity.name" placeholder="活动名称"></Input>
+              <Input v-model="activity.title" placeholder="题目"></Input>
             </Col>
           </Row>
         </form-item>
-        <form-item label="责任老师:" prop="teacher">
+        <form-item label="主讲人:" prop="presenter">
           <Row>
             <Col>
-              <Select v-model="activity.teacher" style="width:200px" filterable>
-                <Option v-for="(item,index) in users" :value="item.username" :key="item.username + index" @on-query-change="onSelectTeacherChange">
-                  {{item.name}}
-                </Option>
-              </Select>
+<!--              <Select v-model="activity.presenter" style="width:200px" filterable>-->
+<!--                <Option v-for="(item,index) in users" :value="item.username" :key="item.username + index" @on-query-change="onSelectTeacherChange">-->
+<!--                  {{item.name}}-->
+<!--                </Option>-->
+<!--              </Select>-->
+              <Input v-model="activity.presenter" placeholder="主讲人"></Input>
             </Col>
           </Row>
         </form-item>
-        <form-item label="活动时间:" prop="inputtime">
+        <form-item label="所属模块:" prop="module">
+          <Row>
+            <Col>
+              <Input v-model="activity.module" placeholder="请填写所属模块"></Input>
+            </Col>
+          </Row>
+        </form-item>
+        <form-item label="培训时间:" prop="start_time">
           <Row>
             <Col span="11">
-              <DatePicker type="datetime" format="yyyy-MM-dd HH:mm" placeholder="开始日期" v-model="activity.inputtime.start_time"></DatePicker>
+              <DatePicker type="datetime" format="yyyy-MM-dd HH:mm" placeholder="培训日期" v-model="activity.start_time"></DatePicker>
             </Col>
-            <Col span="2" style="text-align: center">-</Col>
-            <Col span="11">
-              <DatePicker type="datetime" format="yyyy-MM-dd HH:mm" placeholder="结束日期" v-model="activity.inputtime.end_time"></DatePicker>
-            </Col>
+<!--            <Col span="2" style="text-align: center">-</Col>-->
+<!--            <Col span="11">-->
+<!--              <DatePicker type="datetime" format="yyyy-MM-dd HH:mm" placeholder="结束日期" v-model="activity.inputtime.end_time"></DatePicker>-->
+<!--            </Col>-->
           </Row>
         </form-item>
-        <form-item label="参与人数:" prop="all_num">
+        <form-item label="培训地点:" prop="place">
           <Row>
             <Col>
-              <InputNumber v-model="activity.all_num"></InputNumber>
+              <Input v-model="activity.place" placeholder="请填写培训地点"></Input>
             </Col>
           </Row>
         </form-item>
-        <form-item label="活动地点:" prop="place">
+        <form-item label="学时:" prop="period">
           <Row>
             <Col>
-              <Input v-model="activity.place" placeholder="填写活动地点" />
+              <InputNumber v-model="activity.period"></InputNumber>
             </Col>
           </Row>
         </form-item>
-        <form-item label="活动信息:" prop="information">
+        <form-item label="主办单位:" prop="organizer">
           <Row>
             <Col>
-              <Input v-model="activity.information" type="textarea" placeholder="填写活动信息" />
-            </Col>
-          </Row>
-        </form-item>
-        <FormItem label="学期：" prop="term" v-role ="['管理员']">
-          <Select v-model="activity.term" style="width:200px">
-            <Option v-for="item in terms" :value="item.name" :key="item.name">{{ item.name }}</Option>
-          </Select>
-        </FormItem>
-        <form-item label="报名时间:" prop="inputapplytime">
-          <Row>
-            <Col span="11">
-              <DatePicker type="date" placeholder="起始日期" v-model="activity.inputapplytime.apply_start_time"></DatePicker>
-            </Col>
-            <Col span="2" style="text-align: center">-</Col>
-            <Col span="11">
-              <DatePicker type="date" placeholder="截止日期" v-model="activity.inputapplytime.apply_end_time"></DatePicker>
+              <Input v-model="activity.organizer" placeholder="请填写主办单位"></Input>
             </Col>
           </Row>
         </form-item>
@@ -103,51 +95,34 @@ export default {
       data: [],
       total: 0,
       activity: {
-        name: '',
-        teacher: '',
-        all_num: 1,
+        title: '',
+        module: '',
+        organizer: '',
+        presenter: '',
+        period: 1,
         place: '',
-        information: '',
-        term: '',
-        created_at: '',
-        updated_at: '',
-        inputtime: {
-          start_time: '',
-          end_time: ''
-        },
-        inputapplytime: {
-          apply_start_time: '',
-          apply_end_time: ''
-        }
+        start_time: '',
+        is_obligatory: Boolean
       },
       addActivity: {},
       ruleValidate: {
-        name: [{ required: true, trigger: 'blur', message: '请填写活动名称' }],
-        teacher: [{ required: true, trigger: 'change', message: '请选择责任教师' }],
-        inputtime: [{
-          required: true,
-          type: 'object',
-          trigger: 'change',
-          message: '请选择日期',
-          fields: {
-            start_time: { type: 'date', required: true, message: '请选择开始日期' },
-            end_time: { type: 'date', required: true, message: '请选择结束日期' }
-          }
-        }],
-        all_num: [{ required: true, type: 'number', min: 1, trigger: 'change', message: '参与人数必须大于等于1' }],
+        title: [{ required: true, trigger: 'blur', message: '请填写活动名称' }],
+        presenter: [{ required: true, trigger: 'blur', message: '请填写主讲人' }],
+        module: [{ required: true, trigger: 'blur', message: '请填所属模块' }],
+        // start_time: [{ required: true, trigger: 'change', message: '请选择日期'}],
+        // inputtime: [{
+        //   required: true,
+        //   type: 'object',
+        //   trigger: 'change',
+        //   message: '请选择日期',
+        //   fields: {
+        //     start_time: { type: 'date', required: true, message: '请选择开始日期' },
+        //     end_time: { type: 'date', required: true, message: '请选择结束日期' }
+        //   }
+        // }],
+        period: [{ required: true, type: 'number', min: 1, trigger: 'change', message: '学时大于等于1' }],
         place: [{ required: true, trigger: 'blur', message: '请填写活动地点' }],
-        information: [{ required: true, trigger: 'blur', message: '请填写活动信息' }],
-        term: [{ required: true, trigger: 'change', message: '请选择学期' }],
-        inputapplytime: [{
-          required: true,
-          type: 'object',
-          trigger: 'change',
-          message: '请选择日期',
-          fields: {
-            apply_start_time: { type: 'date', required: true, message: '请选择起始日期' },
-            apply_end_time: { type: 'date', required: true, message: '请选择截止日期' }
-          }
-        }]
+        organizer: [{ required: true, trigger: 'blur', message: '请填写活动地点' }]
       }
     }
   },
@@ -164,40 +139,18 @@ export default {
       this.changeLoading()
       this.$refs.activity_form.validate((valid) => {
         if (valid) {
-          this.activity.inputtime.start_time = dateToString(this.activity.inputtime.start_time, 'yyyy-MM-dd hh:mm:ss')
-          this.activity.inputtime.end_time = dateToString(this.activity.inputtime.end_time, 'yyyy-MM-dd hh:mm:ss')
-          this.activity.inputapplytime.apply_start_time = dateToString(this.activity.inputapplytime.apply_start_time, 'yyyy-MM-dd hh:mm:ss')
-          this.activity.inputapplytime.apply_end_time = dateToString(this.activity.inputapplytime.apply_end_time, 'yyyy-MM-dd hh:mm:ss')
-          this.activity.created_at = dateToString(this.date, 'yyyy-MM-dd hh:mm:ss')
-          this.activity.updated_at = dateToString(this.date, 'yyyy-MM-dd hh:mm:ss')
-          console.log(this.activity.inputtime)
-          console.log(this.activity.inputapplytime)
-          if (this.activity.inputtime.start_time > this.activity.inputtime.end_time) {
-            this.$Message.error('活动开始日期应该在结束日期之前！')
-            return
-          }
-          if (this.activity.inputapplytime.apply_start_time > this.activity.inputapplytime.apply_end_time) {
-            this.$Message.error('活动报名起始日期应该在截止日期之前！')
-            return
-          }
-          if (this.activity.inputapplytime.apply_end_time > this.activity.inputtime.start_time) {
-            this.$Message.error('活动报名截止日期应该在活动开始日期之前！')
-            return
-          }
+          this.activity.start_time = dateToString(this.activity.start_time, 'yyyy-MM-dd hh:mm:ss')
           // this.loading= true;
           this.addActivity = {
-            name: this.activity.name,
-            teacher: this.activity.teacher,
-            all_num: this.activity.all_num,
+            title: this.activity.title,
+            presenter: this.activity.presenter,
+            module: this.activity.module,
+            period: this.activity.period,
             place: this.activity.place,
-            information: this.activity.information,
-            term: this.activity.term,
-            created_at: this.activity.created_at,
-            updated_at: this.activity.updated_at,
-            start_time: this.activity.inputtime.start_time,
-            end_time: this.activity.inputtime.end_time,
-            apply_start_time: this.activity.inputapplytime.apply_start_time,
-            apply_end_time: this.activity.inputapplytime.apply_end_time
+            // term: this.activity.term,
+            start_time: this.activity.start_time,
+            is_obligatory: false,
+            organizer: this.activity.organizer
           }
           this.$emit('onOK', this.addActivity)
           this.activity = {}

@@ -1,7 +1,7 @@
 <template>
   <Card shadow>
     <h1 style="text-align: center">工作计划管理</h1>
-    <Row >
+    <Row>
         <Carousel v-model="term_index" style="height: 400px;">
           <CarouselItem v-for="term in terms" :key="term.name"  style="text-align: center">
                 <Card style="height: 400px;">

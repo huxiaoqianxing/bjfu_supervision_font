@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>活动查看</h1>
+    <h1>已完成培训</h1>
     <br>
     <Form :label-width="80" :model="query" inline>
       <FormItem label="活动名称：" prop="activity">
@@ -8,39 +8,51 @@
                       style="width:180px"
                       @on-search="handleSearchActivateName"></AutoComplete>
       </FormItem>
-      <FormItem label="学期：" :prop="'activity.term'"  v-role="['管理员']">
+      <FormItem label="学期：" :prop="'activity.term'" v-role="['管理员']">
         <Select v-model="query.term" style="width:200px">
           <Option v-for="item in terms" :value="item.name" :key="item.name">{{ item.name }}</Option>
         </Select>
       </FormItem>
-      <FormItem >
+      <FormItem>
         <Button type="primary" @click=" onSearch">查询</Button>
       </FormItem>
     </Form>
 
+    <ActivesAddModal
+      :modal="showActiveAddModal"
+      @onOK="onAddModalOK"
+      @onCancel="onAddModalCancel">
+    </ActivesAddModal>
+
     <Table border stripe :columns="columns" :data="data"></Table>
     <div style="margin: 10px;overflow: hidden">
       <div style="float: right;">
-        <Page :total="total" show-total :page-size="pages._per_page" :current="pages._page" @on-change="onPageChange"></Page>
+        <Page :total="total" show-total :page-size="pages._per_page" :current="pages._page"
+              @on-change="onPageChange"></Page>
       </div>
     </div>
+    <float_bar>
+      <Button type="primary" @click="showActiveAddModal=true">新增</Button>
+    </float_bar>
   </div>
 
 </template>
 
 <script>
-import { queryCurrentuserActives } from '../../../service/api/actives'
-import { queryTerms, getCurrentTerms } from '../../../service/api/term'
-import { updateWithinField } from 'Libs/tools'
-
+import {postActive, queryCurrentuserActives} from '../../../service/api/actives'
+import {queryTerms, getCurrentTerms} from '../../../service/api/term'
+import {updateWithinField} from 'Libs/tools'
+import ActivesAddModal from "Views/ActiveManager/components/ActivesAddModal";
 export default {
   name: 'alreadyRegistered',
+  components:{ActivesAddModal},
   data: function () {
     return {
       query: {
         state: 'hasAttended',
         term: undefined
       }, // 查询用的参数
+      showActiveAddModal: false,
       total: 0, // 总数量
       data: [{
         activity: {},
@@ -55,75 +67,101 @@ export default {
       }, // 分页
       columns: [
         {
-          title: '活动名称',
+          title: '题目',
           render: function (h, params) {
             return (
-              <span>{ params.row.activity.name }</span>
-            )
+              < span > {params.row.activity.title} < /span>
+          )
           }
         },
-        {
-          title: '活动地点',
-          render: function (h, params) {
-            return (
-              <span>{ params.row.activity.place }</span>
-            )
-          }
-        },
-        {
-          title: '活动状态',
-          render: function (h, params) {
-            return (
-              <span>{ params.row.activity.state }</span>
-            )
-          }
-        },
-        {
-          title: '参加状态',
-          render: function (h, params) {
-            return (
-              <span>{ params.row.activity_user.fin_state }</span>
-            )
-          }
-        },
-        {
-          title: '开始时间',
-          render: function (h, params) {
-            return (
-              <span>{ params.row.activity.start_time }</span>
-            )
-          }
-        },
-        {
-          title: '结束时间',
-          render: function (h, params) {
-            return (
-              <span>{ params.row.activity.end_time }</span>
-            )
-          }
-        },
-        {
-          title: '操作',
-          align: 'center',
-          render: (h, params) => {
-            return h('div', [
-              h('Button', {
-                props: {
-                  type: 'primary',
-                  size: 'small'
-                },
-                style: {
-                  marginRight: '2px'
-                },
-                on: {
-                  click: () => {
-                    this.selected_activity_id = params.row.activity.id
+                {
+                  title: '主讲人',
+                  render: function (h, params) {
+                  return (
+                  < span > {params.row.activity.presenter} < /span>
+                  )
                   }
-                }
-              }, '详情')
-            ])
+                  },
+        {
+          title: '所属模块',
+          render: function (h, params) {
+            return (
+              < span > {params.row.activity.module} < /span>
+          )
           }
-        }
+        },
+          {
+            title: '培训时间',
+            render: function (h, params) {
+            return (
+            < span > {params.row.activity.start_time} < /span>
+            )
+            }
+            },
+            {
+              title: '培训地点',
+              render: function (h, params) {
+              return (
+              < span > {params.row.activity.place} < /span>
+              )
+              }
+              },
+              {
+                title: '学时',
+                render: function (h, params) {
+                return (
+                < span > {params.row.activity.period} < /span>
+                )
+                }
+                },
+                {
+                  title: '主办单位',
+                  render: function (h, params) {
+                  return (
+                  < span > {params.row.activity.organizer} < /span>
+                  )
+                  }
+                  },
+                  {
+                    title: '是否必修',
+                    render: function (h, params) {
+                      if(params.row.activity.is_obligatory === false){
+                    return h('Tag', { props: { color: 'grey' } }, '非必修')
+                  }else{
+                    return h('Tag', { props: { color: 'red' } }, '必修')
+                  }
+                    }
+                    },
+                  {
+                    title: '状态',
+                    render: function (h, params) {
+                    return (
+                    < span > {params.row.activity.apply_state} < /span>
+                    )
+                    }
+                    },
+        // {
+        //   title: '操作',
+        //   align: 'center',
+        //   render: (h, params) => {
+        //     return h('div', [
+        //       h('Button', {
+        //         props: {
+        //           type: 'primary',
+        //           size: 'small'
+        //         },
+        //         style: {
+        //           marginRight: '2px'
+        //         },
+        //         on: {
+        //           click: () => {
+        //             this.selected_activity_id = params.row.activity.id
+        //           }
+        //         }
+        //       }, '详情')
+        //     ])
+        //   }
+        // }
       ]
     }
   },
@@ -133,30 +171,42 @@ export default {
     }
   },
   methods: {
-    fetchData () {
+    fetchData() {
       // 数据表发生变化请求数据
-      return queryCurrentuserActives({ ...this.query, ...this.pages }).then((resp) => {
+      return queryCurrentuserActives({...this.query, ...this.pages}).then((resp) => {
         this.data = resp.data.activities
         this.total = resp.data.total
       })
     },
-    onPageChange (page) {
+    onPageChange(page) {
       // 分页变化
       this.pages._page = page
       this.fetchData()
     },
-    onSearch () {
+    onSearch() {
       // 查询变化
       this.pages._page = 1
       this.fetchData()
     },
-    handleSearchActivateName (value) {
-      queryCurrentuserActives({ name_like: value }).then((resp) => {
+    handleSearchActivateName(value) {
+      queryCurrentuserActives({name_like: value}).then((resp) => {
         this.activityName.splice(0, this.activityName.length)
         resp.data.activities.forEach((activity) => {
           this.activityName.push(activity.name)
         })
       })
+    },
+    onAddModalOK (activity) {
+      postActive(activity).then((resp) => {
+        if (resp.data.code === 200) {
+          this.$Message.success({ content: '培训项目添加成功' })
+          this.fetchData()
+        }
+        this.showActiveAddModal = false
+      })
+    },
+    onAddModalCancel () {
+      this.showActiveAddModal = false
     }
   },
   mounted: function () {
@@ -165,7 +215,7 @@ export default {
       this.terms = resp.data.terms
       getCurrentTerms().then((termResp) => {
         this.query.term = termResp.data.term.name
-        queryCurrentuserActives({ ...this.query, ...this.pages }).then((resp) => {
+        queryCurrentuserActives({...this.query, ...this.pages}).then((resp) => {
           this.data = resp.data.activities
           this.total = resp.data.total
         })

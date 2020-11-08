@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>活动报名</h1>
+    <h1>培训报名</h1>
     <br>
     <Form :label-width="80" :model="query" inline>
       <FormItem label="活动名称：" prop="activity">
@@ -56,65 +56,77 @@ export default {
       }, // 分页
       columns: [
         {
-          title: '活动名称',
+          title: '题目',
           render: function (h, params) {
             return (
-              < span > {params.row.activity.name
+              < span > {params.row.activity.title
               }<
-              /span>
+                /span>
             )
           }
         },
         {
-          title: '活动地点',
+          title: '主讲人',
           render: function (h, params) {
             return (
-              < span > {params.row.activity.place
+              < span > {params.row.activity.presenter
               }<
               /span>
             )
           }
         },
-        {
-          title: '活动状态',
-          render: function (h, params) {
+          {
+            title: '所属模块',
+            render: function (h, params) {
             return (
-              < span > {params.row.activity.state
-              }<
-              /span>
+            < span > {params.row.activity.module} < /span>
             )
-          }
-        },
-        {
-          title: '参加状态',
-          render: function (h, params) {
-            return (
-              < span > {params.row.activity_user.fin_state
-              }<
-              /span>
-            )
-          }
-        },
-        {
-          title: '开始时间',
-          render: function (h, params) {
-            return (
-              < span > {params.row.activity.start_time
-              }<
-              /span>
-            )
-          }
-        },
-        {
-          title: '结束时间',
-          render: function (h, params) {
-            return (
-              < span > {params.row.activity.end_time
-              }<
-              /span>
-            )
-          }
-        },
+            }
+            },
+            {
+              title: '培训时间',
+              render: function (h, params) {
+              return (
+              < span > {params.row.activity.start_time} < /span>
+              )
+              }
+              },
+              {
+                title: '培训地点',
+                render: function (h, params) {
+                return (
+                < span > {params.row.activity.place} < /span>
+                )
+                }
+                },
+                {
+                  title: '学时',
+                  render: function (h, params) {
+                  return (
+                  < span > {params.row.activity.period} < /span>
+                  )
+                  }
+                  },
+                  {
+                    title: '主办单位',
+                    render: function (h, params) {
+                    return (
+                    < span > {params.row.activity.organizer} < /span>
+                    )
+                    }
+                    },
+                    {
+                      title: '是否必修',
+                      render: function (h, params) {
+                      if(params.row.activity.is_obligatory === false){
+                      return h('Tag', { props: { color: 'grey' } }, '非必修')
+                    }else{
+                      return h('Tag', { props: { color: 'red' } }, '必修')
+                    }
+                    }
+                    },
+
+
         {
           title: '操作',
           align: 'center',
@@ -130,7 +142,6 @@ export default {
                 },
                 directives: [{
                   name: 'role',
-                  value: ['管理员']
                 }],
                 on: {
                   click: () => {
