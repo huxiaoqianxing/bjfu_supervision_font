@@ -127,10 +127,10 @@ export default {
     }
   },
   methods: {
-    changeLoading: function() {
-      setTimeout(()=>{
-        this.loading = false;
-        this.$nextTick(()=>{
+    changeLoading: function () {
+      setTimeout(() => {
+        this.loading = false
+        this.$nextTick(() => {
           this.loading = true
         })
       }, 500)

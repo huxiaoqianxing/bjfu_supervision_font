@@ -39,13 +39,13 @@
 </template>
 
 <script>
-import {postActive, queryCurrentuserActives} from '../../../service/api/actives'
-import {queryTerms, getCurrentTerms} from '../../../service/api/term'
-import {updateWithinField} from 'Libs/tools'
-import ActivesAddModal from "Views/ActiveManager/components/ActivesAddModal";
+import { postActive, queryCurrentuserActives } from '../../../service/api/actives'
+import { queryTerms, getCurrentTerms } from '../../../service/api/term'
+import { updateWithinField } from 'Libs/tools'
+import ActivesAddModal from 'Views/ActiveManager/components/ActivesAddModal'
 export default {
   name: 'alreadyRegistered',
-  components:{ActivesAddModal},
+  components: { ActivesAddModal },
   data: function () {
     return {
       query: {
@@ -71,75 +71,75 @@ export default {
           render: function (h, params) {
             return (
               < span > {params.row.activity.title} < /span>
-          )
+            )
           }
         },
-                {
-                  title: '主讲人',
-                  render: function (h, params) {
-                  return (
-                  < span > {params.row.activity.presenter} < /span>
-                  )
-                  }
-                  },
+        {
+          title: '主讲人',
+          render: function (h, params) {
+            return (
+              < span > {params.row.activity.presenter} < /span>
+            )
+          }
+        },
         {
           title: '所属模块',
           render: function (h, params) {
             return (
               < span > {params.row.activity.module} < /span>
-          )
+            )
           }
         },
-          {
-            title: '培训时间',
-            render: function (h, params) {
+        {
+          title: '培训时间',
+          render: function (h, params) {
             return (
-            < span > {params.row.activity.start_time} < /span>
+              < span > {params.row.activity.start_time} < /span>
             )
-            }
-            },
-            {
-              title: '培训地点',
-              render: function (h, params) {
-              return (
+          }
+        },
+        {
+          title: '培训地点',
+          render: function (h, params) {
+            return (
               < span > {params.row.activity.place} < /span>
-              )
-              }
-              },
-              {
-                title: '学时',
-                render: function (h, params) {
-                return (
-                < span > {params.row.activity.period} < /span>
-                )
-                }
-                },
-                {
-                  title: '主办单位',
-                  render: function (h, params) {
-                  return (
-                  < span > {params.row.activity.organizer} < /span>
-                  )
-                  }
-                  },
-                  {
-                    title: '是否必修',
-                    render: function (h, params) {
-                      if(params.row.activity.is_obligatory === false){
-                    return h('Tag', { props: { color: 'grey' } }, '非必修')
-                  }else{
-                    return h('Tag', { props: { color: 'red' } }, '必修')
-                  }
-                    }
-                    },
-                  {
-                    title: '状态',
-                    render: function (h, params) {
-                    return (
-                    < span > {params.row.activity.apply_state} < /span>
-                    )
-                    }
-                    },
+            )
+          }
+        },
+        {
+          title: '学时',
+          render: function (h, params) {
+            return (
+              < span > {params.row.activity.period} < /span>
+            )
+          }
+        },
+        {
+          title: '主办单位',
+          render: function (h, params) {
+            return (
+              < span > {params.row.activity.organizer} < /span>
+            )
+          }
+        },
+        {
+          title: '是否必修',
+          render: function (h, params) {
+            if (params.row.activity.is_obligatory === false) {
+              return h('Tag', { props: { color: 'grey' } }, '非必修')
+            } else {
+              return h('Tag', { props: { color: 'red' } }, '必修')
+            }
+          }
+        },
+        {
+          title: '状态',
+          render: function (h, params) {
+            return (
+              < span > {params.row.activity.apply_state} < /span>
+            )
+          }
+        }
         // {
         //   title: '操作',
         //   align: 'center',
@@ -171,25 +171,25 @@ export default {
     }
   },
   methods: {
-    fetchData() {
+    fetchData () {
       // 数据表发生变化请求数据
-      return queryCurrentuserActives({...this.query, ...this.pages}).then((resp) => {
+      return queryCurrentuserActives({ ...this.query, ...this.pages }).then((resp) => {
         this.data = resp.data.activities
         this.total = resp.data.total
       })
     },
-    onPageChange(page) {
+    onPageChange (page) {
       // 分页变化
       this.pages._page = page
       this.fetchData()
     },
-    onSearch() {
+    onSearch () {
       // 查询变化
       this.pages._page = 1
       this.fetchData()
     },
-    handleSearchActivateName(value) {
-      queryCurrentuserActives({name_like: value}).then((resp) => {
+    handleSearchActivateName (value) {
+      queryCurrentuserActives({ name_like: value }).then((resp) => {
         this.activityName.splice(0, this.activityName.length)
         resp.data.activities.forEach((activity) => {
           this.activityName.push(activity.name)
@@ -215,7 +215,7 @@ export default {
       this.terms = resp.data.terms
       getCurrentTerms().then((termResp) => {
         this.query.term = termResp.data.term.name
-        queryCurrentuserActives({...this.query, ...this.pages}).then((resp) => {
+        queryCurrentuserActives({ ...this.query, ...this.pages }).then((resp) => {
           this.data = resp.data.activities
           this.total = resp.data.total
         })

@@ -3,15 +3,15 @@
     <h1>培训报名</h1>
     <br>
     <Form :label-width="80" :model="query" inline>
-      <FormItem label="活动名称：" prop="activity">
-        <AutoComplete v-model="query.name_like" :data="activityName"
+      <FormItem label="模块：" prop="module">
+        <AutoComplete v-model="query.module_like" :data="moduleName"
                       style="width:180px"
-                      @on-search="handleSearchActivateName"></AutoComplete>
+                      @on-search="handleSearchModuleName"></AutoComplete>
       </FormItem>
-      <FormItem label="学期：" :prop="'activity.term'" v-role="['管理员']">
-        <Select v-model="query.term" style="width:200px">
-          <Option v-for="item in terms" :value="item.name" :key="item.name">{{ item.name }}</Option>
-        </Select>
+      <FormItem label="题目：" prop="activity">
+        <AutoComplete v-model="query.title_like" :data="titleName"
+                      style="width:180px"
+                      @on-search="handleSearchModuleName"></AutoComplete>
       </FormItem>
       <FormItem>
         <Button type="primary" @click=" onSearch">查询</Button>
@@ -47,7 +47,9 @@ export default {
         activity: {},
         activity_user: {}
       }], // 数据
-      activityName: [],
+      moduleName: [],
+      activityName:[],
+      titleName:[],
       terms: [],
       selected_activity_id: '', // 选中编辑的课程ids
       pages: {
@@ -61,7 +63,7 @@ export default {
             return (
               < span > {params.row.activity.title
               }<
-                /span>
+              /span>
             )
           }
         },
@@ -75,58 +77,64 @@ export default {
             )
           }
         },
+        {
+          title: '所属模块',
+          render: function (h, params) {
+            return (
+              < span > {params.row.activity.module} < /span>
+            )
+          }
+        },
+        {
+          title: '培训时间',
+          render: function (h, params) {
+            return (
+              < span > {params.row.activity.start_time} < /span>
+            )
+          }
+        },
+        {
+          title: '培训地点',
+          render: function (h, params) {
+            return (
+              < span > {params.row.activity.place} < /span>
+            )
+          }
+        },
+        {
+          title: '学时',
+          render: function (h, params) {
+            return (
+              < span > {params.row.activity.period} < /span>
+            )
+          }
+        },
+        {
+          title: '主办单位',
+          render: function (h, params) {
+            return (
+              < span > {params.row.activity.organizer} < /span>
+            )
+          }
+        },
+        {
+          title: '是否必修',
+          render: function (h, params) {
+            if (params.row.activity.is_obligatory === false) {
+              return h('Tag', { props: { color: 'grey' } }, '非必修')
+            } else {
+              return h('Tag', { props: { color: 'red' } }, '必修')
+            }
+          }
+        },
           {
-            title: '所属模块',
+            title: '状态',
             render: function (h, params) {
             return (
-            < span > {params.row.activity.module} < /span>
+            < span > {params.row.activity.apply_state} < /span>
             )
             }
             },
-            {
-              title: '培训时间',
-              render: function (h, params) {
-              return (
-              < span > {params.row.activity.start_time} < /span>
-              )
-              }
-              },
-              {
-                title: '培训地点',
-                render: function (h, params) {
-                return (
-                < span > {params.row.activity.place} < /span>
-                )
-                }
-                },
-                {
-                  title: '学时',
-                  render: function (h, params) {
-                  return (
-                  < span > {params.row.activity.period} < /span>
-                  )
-                  }
-                  },
-                  {
-                    title: '主办单位',
-                    render: function (h, params) {
-                    return (
-                    < span > {params.row.activity.organizer} < /span>
-                    )
-                    }
-                    },
-                    {
-                      title: '是否必修',
-                      render: function (h, params) {
-                      if(params.row.activity.is_obligatory === false){
-                      return h('Tag', { props: { color: 'grey' } }, '非必修')
-                    }else{
-                      return h('Tag', { props: { color: 'red' } }, '必修')
-                    }
-                    }
-                    },
-
-
         {
           title: '操作',
           align: 'center',
@@ -141,7 +149,7 @@ export default {
                   marginRight: '2px'
                 },
                 directives: [{
-                  name: 'role',
+                  name: 'role'
                 }],
                 on: {
                   click: () => {
@@ -191,7 +199,7 @@ export default {
       this.pages._page = 1
       this.fetchData()
     },
-    handleSearchActivateName (value) {
+    handleSearchModuleName (value) {
       queryCurrentuserActives({ name_like: value }).then((resp) => {
         this.activityName.splice(0, this.activityName.length)
         resp.data.activities.forEach((activity) => {

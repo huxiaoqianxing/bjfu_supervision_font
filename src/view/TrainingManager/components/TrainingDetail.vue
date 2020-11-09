@@ -62,8 +62,8 @@
 
 <script>
 export default {
-  name: "TrainingDetail",
-  data() {
+  name: 'TrainingDetail',
+  data () {
     return {
       training: {
         name: '',

@@ -29,16 +29,16 @@
 </template>
 
 <script>
-import {getCurrentTerms, queryTerms} from "@/service/api/term";
-import {queryCurrentuserActives} from "@/service/api/actives";
+import { getCurrentTerms, queryTerms } from '@/service/api/term'
+import { queryCurrentuserActives } from '@/service/api/actives'
 
 export default {
-  name: "canRegisterTraining",
+  name: 'canRegisterTraining',
   data: function () {
     return {
       query: {
         state: 'canTraining',
-        term: undefined,
+        term: undefined
       },
       total: 0,
       data: [{
@@ -86,9 +86,9 @@ export default {
     }
   },
   methods: {
-    fetchData() {
+    fetchData () {
       // 数据表发生变化请求数据
-      let args = {...this.query, ...this.pages}
+      let args = { ...this.query, ...this.pages }
       return queryCurrentuserActives(args).then((resp) => {
         this.data = resp.data.trainings
         this.total = resp.data.total
@@ -99,13 +99,13 @@ export default {
       this.pages._page = page
       this.fetchData()
     },
-    searchTrainingTitle() {
+    searchTrainingTitle () {
 
     },
-    searchModel(){
+    searchModel () {
 
     },
-    onSearch(){
+    onSearch () {
 
     }
   }

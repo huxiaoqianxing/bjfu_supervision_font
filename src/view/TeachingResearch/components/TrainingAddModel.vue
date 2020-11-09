@@ -79,13 +79,13 @@
 
 <script>
 export default {
-  name: "TrainingAddModel",
+  name: 'TrainingAddModel',
   props: {
     show: Boolean,
     onOk: Function,
     onCancel: Function
   },
-  data() {
+  data () {
     return {
       activity: {
         name: '',
@@ -132,7 +132,7 @@ export default {
           }
         }]
       },
-      selectList: [{value: 'yes', label: 'yes'}, {value: 'no', label: 'no'}],
+      selectList: [{ value: 'yes', label: 'yes' }, { value: 'no', label: 'no' }],
       statusList: ['待审核', '已完成', '待提交']
     }
   },
@@ -140,11 +140,11 @@ export default {
     handleCancel: function () {
       this.$emit('onCancel')
     },
-    handleOk() {
+    handleOk () {
       this.$emit('onOk')
     }
   },
-  mounted() {
+  mounted () {
     console.log(this.is_obligatory)
   }
 }

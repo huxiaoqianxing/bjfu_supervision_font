@@ -9,22 +9,22 @@
 
 <script>
 export default {
-  name: "ModifyTeachingPlan",
+  name: 'ModifyTeachingPlan',
   props: {
     show: Boolean,
     onOK: Boolean,
     onConceal: Boolean
   },
-  data(){
+  data () {
     return {
 
     }
   },
   methods: {
-    handleOK() {
+    handleOK () {
       this.$emit('onOK')
     },
-    handleCancel() {
+    handleCancel () {
       this.$emit('onConceal')
     }
   }

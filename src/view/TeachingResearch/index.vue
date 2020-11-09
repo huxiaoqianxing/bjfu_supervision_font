@@ -15,28 +15,28 @@
 </template>
 
 <script>
-import alreadyCompletedTraining from "Views/TeachingResearch/components/alreadyCompletedTraining";
-import canRegisterTraining from "Views/TeachingResearch/components/canRegisterTraining";
-import AlreadyCompletedTraining from "Views/TeachingResearch/components/alreadyCompletedTraining";
-import CanRegisterTraining from "Views/TeachingResearch/components/canRegisterTraining";
+import alreadyCompletedTraining from 'Views/TeachingResearch/components/alreadyCompletedTraining'
+import canRegisterTraining from 'Views/TeachingResearch/components/canRegisterTraining'
+import AlreadyCompletedTraining from 'Views/TeachingResearch/components/alreadyCompletedTraining'
+import CanRegisterTraining from 'Views/TeachingResearch/components/canRegisterTraining'
 export default {
-  components: {CanRegisterTraining, AlreadyCompletedTraining},
-  comments:{
+  components: { CanRegisterTraining, AlreadyCompletedTraining },
+  comments: {
     alreadyCompletedTraining,
     canRegisterTraining
   },
-  data:function (){
+  data: function () {
     return {
       select_tag: '培训报名'
     }
   },
-  computed:{
-    currentPath:function (){
+  computed: {
+    currentPath: function () {
       return this.$route.path
     }
   },
-  methods:{
-    onTypeTabClick(value){
+  methods: {
+    onTypeTabClick (value) {
       this.select_tag = value
     }
   }

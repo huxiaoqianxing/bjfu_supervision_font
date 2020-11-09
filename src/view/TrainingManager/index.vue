@@ -43,69 +43,68 @@
     <TrainingDetail></TrainingDetail>
   </div>
 
-
 </template>
 
 <script>
-import ModifyTeachingPlan from "Views/TrainingManager/components/ModifyTeachingPlan";
-import TrainingDetail from "Views/TrainingManager/components/TrainingDetail";
+import ModifyTeachingPlan from 'Views/TrainingManager/components/ModifyTeachingPlan'
+import TrainingDetail from 'Views/TrainingManager/components/TrainingDetail'
 export default {
-name: "index",
-  components:{ModifyTeachingPlan, TrainingDetail},
-data(){
-  return {
-    query:{
-      name_like:'',
-      model:''
-    },
-    data:[],
-    total: 0,
-    showModifyTeaching: false,
-    trainingName:'',
-    trainingModel: '',
-    columns: [
-      {
-        title: '题目'
+  name: 'index',
+  components: { ModifyTeachingPlan, TrainingDetail },
+  data () {
+    return {
+      query: {
+        name_like: '',
+        model: ''
       },
-      {
-        title: '主讲人'
-      },
-      {
-        title: '所属模块'
-      },
-      {
-        title: '培训时间'
-      },
-      {
-        title: '培训地点'
-      },
-      {
-        title: '主办单位'
-      },
-      {
-        title: '是否必修'
-      },
-      {
-        title: '学识'
-      },
-      {
-        title: '操作'
+      data: [],
+      total: 0,
+      showModifyTeaching: false,
+      trainingName: '',
+      trainingModel: '',
+      columns: [
+        {
+          title: '题目'
+        },
+        {
+          title: '主讲人'
+        },
+        {
+          title: '所属模块'
+        },
+        {
+          title: '培训时间'
+        },
+        {
+          title: '培训地点'
+        },
+        {
+          title: '主办单位'
+        },
+        {
+          title: '是否必修'
+        },
+        {
+          title: '学识'
+        },
+        {
+          title: '操作'
+        }
+      ],
+      pages: {
+        _page: 1,
+        _per_page: 10
       }
-    ],
-    pages: {
-      _page: 1,
-      _per_page: 10
     }
-  }
-},
-  methods:{
-    handleSearchTrainingName(){
+  },
+  methods: {
+    handleSearchTrainingName () {
 
     },
-    handelSearchTrainingModel(){
+    handelSearchTrainingModel () {
 
     },
-    onSearch(){
+    onSearch () {
 
     },
     onPageChange (page) {
@@ -113,13 +112,13 @@ data(){
       this.pages._page = page
       this.fetchData()
     },
-    modifyTeachingPlan(){
+    modifyTeachingPlan () {
 
     },
-    onModifyOk(){},
-    onModifyCanceal(){},
-    fetchData(){},
-    onPageChange1(page) {
+    onModifyOk () {},
+    onModifyCanceal () {},
+    fetchData () {},
+    onPageChange1 (page) {
       // 分页变化
       this.pages._page = page
       this.fetchData()

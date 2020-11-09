@@ -79,6 +79,11 @@ export default {
     name: '督导学院教学院长',
     path: 'leader_lookup',
     component: resolve => require(['Views/UserSuperManager/index.vue'], resolve)
+  },
+  {
+    name: '督导教学发展',
+    path: 'teacher_training',
+    component: resolve => require(['Views/TeachingDevelopment/index.vue'], resolve)
   }
   ]
 }
